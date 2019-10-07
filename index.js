@@ -15,10 +15,12 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', function (socket) {
+  let userList = [];
   //          -- ON CONNECT --
-  io.emit('chat message', 'Welcome, new user!');
   socket.on('user connected', function (username) {
-    io.emit('user connected', username);
+    userList.push(username);
+    io.emit('user connected', userList);
+    io.emit('chat message', `Welcome, ${username}!`);
   });
   //           -- ON RECEIVE MESSAGE --
   socket.on('chat message', function (msg) {
