@@ -14,8 +14,9 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
+let userList = [];
+
 io.on('connection', function (socket) {
-  let userList = [];
   //          -- ON CONNECT --
   socket.on('user connected', function (username) {
     userList.push(username);
