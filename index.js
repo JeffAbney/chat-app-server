@@ -15,13 +15,19 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-    io.emit('chat message', 'Welcome, new user!');
+    io.emit('chat message', 'Welcome, new user!'); //on connect say hello
     socket.on('chat message', function(msg){
         socket.broadcast.emit('chat message', msg);
-    });
+    }); //on receive message, broadcast it
     socket.on('disconnect', function(){
         io.emit('chat message', "Goodbye, friend!");
-      });
+      }); //on disconnect, say goodbye
+      socket.on('focus on', function(username){
+        socket.broadcast.emit('focus on', username)
+      })
+      socket.on('focus out', function(){
+        socket.broadcast.emit('focus out')
+      })
   });
 
 http.listen(process.env.PORT || 3000, function(){
