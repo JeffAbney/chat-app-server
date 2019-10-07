@@ -14,13 +14,13 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-let userList = [];
+let userArr = [];
 
 io.on('connection', function (socket) {
   //          -- ON CONNECT --
   socket.on('user connected', function (username) {
-    userList.push(username);
-    io.emit('user connected', userList);
+    userArr.push(username);
+    io.emit('user connected', userArr);
     io.emit('chat message', `Welcome, ${username}!`);
   });
   //           -- ON RECEIVE MESSAGE --
