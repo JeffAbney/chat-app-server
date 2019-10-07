@@ -21,6 +21,7 @@ io.on('connection', function (socket) {
   socket.on('user connected', function (username) {
     userArr.push(username);
     io.emit('user connected', userArr);
+    console.log('server userArr', userArr);
     io.emit('chat message', `Welcome, ${username}!`);
   });
   //           -- ON RECEIVE MESSAGE --
