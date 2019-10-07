@@ -18,7 +18,7 @@ io.on('connection', function (socket) {
   //          -- ON CONNECT --
   io.emit('chat message', 'Welcome, new user!');
   socket.on('user connected', function (username) {
-    socket.emit('user connected', username);
+    io.emit('user connected', username);
   });
   //           -- ON RECEIVE MESSAGE --
   socket.on('chat message', function (msg) {
