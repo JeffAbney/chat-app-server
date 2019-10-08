@@ -21,9 +21,9 @@ io.on('connection', function (socket) {
   //          -- ON CONNECT --
   socket.on('user connected', function (username) {
     connectedUsers[socket.id] = socket;
+    connectedUsers[socket.id].username = username;
     userArr.push(username);
     io.emit('user connected', userArr);
-    console.log('server userArr', userArr);
     console.log('connected users', connectedUsers)
     io.emit('chat message', `Welcome, ${username}!`);
   });
@@ -31,18 +31,17 @@ io.on('connection', function (socket) {
   socket.on('chat message', function (msg) {
     socket.broadcast.emit('chat message', msg);
   });
-    //           -- ON RECEIVE PRIVATE MESSAGE FROM CLIENT --
-    socket.on('private message', function (msg, recepient) {
-      io.to(connectedUsers[recepient]).emit('private message', msg);;
-    
-    });
-  
-    //           -- ON DISCONNECT --
+  //           -- ON RECEIVE PRIVATE MESSAGE FROM CLIENT --
+  socket.on('private message', function (msg, recepient) {
+    io.to(connectedUsers[recepient]).emit('private message', msg);;
+
+  });
+
+  //           -- ON DISCONNECT --
   socket.on('disconnect', function () {
-    socket.on('disconnect', function() {
-      delete clients[socket.id];
-    });
-    io.emit('chat message', `Goodbye, ${socket.id}!`);
+    userArr.splice(userArr.indexOf(connectedUsers[socket.id].username), 1)
+    delete connectedUsers[socket.id];
+    io.emit('chat message', `Goodbye, ${connectedUsers[socket.id].username}!`);
   });
   //      -- ON FOCUS --
   socket.on('focus on', function (username) {
