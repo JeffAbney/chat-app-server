@@ -23,8 +23,7 @@ io.on('connection', function (socket) {
     connectedUsers[socket.id] = socket;
     connectedUsers[socket.id].username = username;
     userArr.push(username);
-    io.emit('user connected', userArr);
-    console.log('connected users', connectedUsers)
+    io.emit('users changed', userArr);
     io.emit('chat message', `Welcome, ${username}!`);
   });
   //           -- ON RECEIVE MESSAGE FROM CLIENT --
@@ -42,6 +41,7 @@ io.on('connection', function (socket) {
     userArr.splice(userArr.indexOf(connectedUsers[socket.id].username), 1);
     io.emit('chat message', `Goodbye, ${connectedUsers[socket.id].username}!`);
     delete connectedUsers[socket.id];
+    io.emit('users changed', userArr);
   });
   //      -- ON FOCUS --
   socket.on('focus on', function (username) {
