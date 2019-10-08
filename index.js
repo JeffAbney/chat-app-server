@@ -31,29 +31,30 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('chat message', msg);
   });
   //           -- ON RECEIVE PRIVATE MESSAGE FROM CLIENT --
-  // socket.on('private message', function (username, msg) {
-  //   function getSocketId() {
-  //     var x;
-  //     for (x in connectedUsers) {
-  //       if (connectedUsers.hasOwnProperty(x)) {
-  //         if (connectedUsers[x].username === username) {
-  //           return x;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   let recepient = getSocketId();
+  socket.on('private message', function (username, msg) {
+    function getSocketId() {
+      var x;
+      for (x in connectedUsers) {
+        if (connectedUsers.hasOwnProperty(x)) {
+          if (connectedUsers[x].username === username) {
+            return x;
+          }
+        }
+      }
+    }
+    let recepient = getSocketId();
     
-  //   io.to(connectedUsers[recepient]).emit('private message', `${username}: ${msg}`);
-  // });
+    io.to(recepient).emit('private message', `${username}: ${msg}`);
+  });
 
   //           -- ON DISCONNECT --
-  socket.on('disconnect', function () {
-    userArr.splice(userArr.indexOf(connectedUsers[socket.id].username), 1);
-    io.emit('chat message', `Goodbye, ${connectedUsers[socket.id].username}!`);
-    delete connectedUsers[socket.id];
-    io.emit('users changed', userArr);
-  });
+  // socket.on('disconnect', function () {
+  //     userArr.splice(userArr.indexOf(connectedUsers[socket.id].username), 1);
+  //     io.emit('chat message', `Goodbye, ${connectedUsers[socket.id].username}!`);
+  //     delete connectedUsers[socket.id];
+  //     io.emit('users changed', userArr);
+
+  // });
   //      -- ON FOCUS --
   socket.on('focus on', function (username) {
     socket.broadcast.emit('focus on', username)
