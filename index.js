@@ -31,10 +31,21 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('chat message', msg);
   });
   //           -- ON RECEIVE PRIVATE MESSAGE FROM CLIENT --
-  socket.on('private message', function (username, msg) {
-    let recepient = connectedUsers.filter((socket) => socket.username === username);
-    io.to(connectedUsers[recepient]).emit('private message', `${username}: ${msg}`);
-  });
+  // socket.on('private message', function (username, msg) {
+  //   function getSocketId() {
+  //     var x;
+  //     for (x in connectedUsers) {
+  //       if (connectedUsers.hasOwnProperty(x)) {
+  //         if (connectedUsers[x].username === username) {
+  //           return x;
+  //         }
+  //       }
+  //     }
+  //   }
+  //   let recepient = getSocketId();
+    
+  //   io.to(connectedUsers[recepient]).emit('private message', `${username}: ${msg}`);
+  // });
 
   //           -- ON DISCONNECT --
   socket.on('disconnect', function () {
