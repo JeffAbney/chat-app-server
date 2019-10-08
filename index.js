@@ -39,9 +39,9 @@ io.on('connection', function (socket) {
 
   //           -- ON DISCONNECT --
   socket.on('disconnect', function () {
-    userArr.splice(userArr.indexOf(connectedUsers[socket.id].username), 1)
-    delete connectedUsers[socket.id];
+    userArr.splice(userArr.indexOf(connectedUsers[socket.id].username), 1);
     io.emit('chat message', `Goodbye, ${connectedUsers[socket.id].username}!`);
+    delete connectedUsers[socket.id];
   });
   //      -- ON FOCUS --
   socket.on('focus on', function (username) {
