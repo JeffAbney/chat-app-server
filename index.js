@@ -31,9 +31,9 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('chat message', msg);
   });
   //           -- ON RECEIVE PRIVATE MESSAGE FROM CLIENT --
-  socket.on('private message', function (msg, recepient) {
-    io.to(connectedUsers[recepient]).emit('private message', msg);;
-
+  socket.on('private message', function (msg, username) {
+    let recepient = connectedUsers.filter((socket) => socket.username === username);
+    io.to(connectedUsers[recepient]).emit('private message', `${username}: ${msg}`);
   });
 
   //           -- ON DISCONNECT --
